@@ -1,5 +1,5 @@
 FROM java:8
-EXPORT 8080
+EXPOSE 8080
 ADD target/*.jar app.jar
 RUN sh -c 'touch /app.jar'
 ENV JAVA_OPTS=""
