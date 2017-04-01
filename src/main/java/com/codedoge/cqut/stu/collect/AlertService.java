@@ -31,7 +31,7 @@ public class AlertService {
         this.mailSender = mailSender;
     }
 
-    @Scheduled(cron = "0 0 10,20 * * *")
+    @Scheduled(cron = "0 0 12 * * *")
     public void alert() {
         log.info("定时提醒JOB启动");
         Iterable<UserInfo> userInfos = userInfoDao.findAll();
@@ -44,10 +44,10 @@ public class AlertService {
                     message.setTo(stu.getQq() + "@qq.com");
                     message.setSubject("主题：重庆理工大学10级信息与计算科学专业校友信息收集");
                     message.setText(stu.getStuName() + "同学，您好：\r\n" +
-                            "    由于校友信息是学校就业处、教务处、档案馆等部门数据整理的校友信息数据，而经过多年的专业整合，" +
+                            "    抱歉打扰。由于校友信息是学校就业处、教务处、档案馆等部门数据整理的校友信息数据，而经过多年的专业整合，" +
                             "数据在统计过程中难免有缺失、重复等情况，根据学校对校友工作的要求，需要重新采集完善的校友信息，" +
                             "麻烦各位填一下表格信息，地址：http://110010101.daoapp.io/，双击行进行编辑，谢谢！\r\n" +
-                            "郭远峰");
+                            "此信息为每天定时发送。若不需要填写，请忽略！郭远峰");
                     mailSender.send(message);
                 }
             }
