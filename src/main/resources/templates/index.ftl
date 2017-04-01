@@ -141,7 +141,7 @@
         var tableTemplate = ejs.compile($('#stu-table-template').html());
         var modifyTemplate = ejs.compile($('#stu-modify-template').html());
 
-        $.get('/students', {}, function (result) {
+        $.get('/students?reqdate=' + new Date().getTime(), {}, function (result) {
             var html = tableTemplate({data: result});
             $('#stu-table-result').html(html);
         });
@@ -156,12 +156,6 @@
         });
     });
 
-    var getStuInfos = function () {
-        $.get('/students?reqdate=' + new Date().getTime(), {}, function (result) {
-            var html = tableTemplate({data: result});
-            $('#stu-table-result').html(html);
-        });
-    };
 </script>
 </body>
 </html>
