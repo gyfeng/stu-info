@@ -148,7 +148,7 @@
 
         $(document).on('dblclick', '#stu-table-result tbody tr', function () {
             var stuId = $(this).attr('stu-id');
-            var url = 'student/' + stuId;
+            var url = 'student/' + stuId + '?reqdate=' + new Date().getTime();
             $.get(url, {}, function (result) {
                 var html = modifyTemplate(result);
                 $('#stu-table-result').html(html);
@@ -157,7 +157,7 @@
     });
 
     var getStuInfos = function () {
-        $.get('/students', {}, function (result) {
+        $.get('/students?reqdate=' + new Date().getTime(), {}, function (result) {
             var html = tableTemplate({data: result});
             $('#stu-table-result').html(html);
         });
