@@ -1,5 +1,6 @@
 package com.codedoge.cqut.stu.collect;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 1.0
  */
 @RestController
+@Slf4j
 public class StuInfoController {
     private final UserInfoDao userInfoDao;
 
@@ -33,6 +35,7 @@ public class StuInfoController {
 
     @RequestMapping(value = "student/{id}", method = RequestMethod.POST)
     public UserInfo modifyStudent(@PathVariable("id") Integer id, UserInfo userInfo) {
+        log.info("update stu[{}] info:{}", id, userInfo);
         UserInfo stu = userInfoDao.findOne(id);
         userInfo.setId(id);
         BeanUtils.copyProperties(userInfo, stu, "id"
