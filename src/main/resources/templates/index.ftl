@@ -22,6 +22,12 @@
         <p>
             各位同学，大家好，由于校友信息是学校就业处、教务处、档案馆等部门数据整理的校友信息数据，而经过多年的专业整合，数据在统计过程中难免有缺失、重复等情况，根据学校对校友工作的要求，需要重新采集完善的校友信息，麻烦各位填一下表格信息，谢谢！</p>
     </div>
+
+    <div class="alert alert-warning" role="alert">
+        <strong>Warning!</strong> 本信息为重庆理工大学10级信息与计算科学专业校友信息收集专用，请勿用于其他用途。
+        若出现非法变卖个人信息情况，将承担相应法律责任。
+    </div>
+
     <div id="stu-table-result">
     </div>
     <script id="stu-table-template" type="application/xml">
