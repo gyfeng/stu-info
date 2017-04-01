@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class StuInfoController {
     private final UserInfoDao userInfoDao;
 
+
     @Autowired
     public StuInfoController(UserInfoDao userInfoDao) {
         this.userInfoDao = userInfoDao;
@@ -30,6 +31,7 @@ public class StuInfoController {
 
     @RequestMapping(value = "student/{id}", method = RequestMethod.GET)
     public UserInfo queryStudent(@PathVariable("id") Integer id) {
+
         return userInfoDao.findOne(id);
     }
 

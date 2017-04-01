@@ -47,6 +47,7 @@
                     <th style="min-width:100px;">QQ</th>
                     <th style="min-width:50px;">学历</th>
                     <th>备注</th>
+                    <th>修改</th>
                 </tr>
             </thead>
             <tbody>
@@ -64,6 +65,12 @@
                     <td>{{= data[i].qq }}</td>
                     <td>{{= data[i].education }}</td>
                     <td>{{= data[i].remark }}</td>
+                    <td>
+                        <button type="button" name="modify" stu-id="{{= data[i].id }}" class="btn btn-default"
+                                aria-label="Left Align">
+                            修改
+                        </button>
+                    </td>
                 </tr>
                 {{ } }}
             </tbody>
@@ -153,6 +160,15 @@
         });
 
         $(document).on('dblclick', '#stu-table-result tbody tr', function () {
+            var stuId = $(this).attr('stu-id');
+            var url = 'student/' + stuId + '?reqdate=' + new Date().getTime();
+            $.get(url, {}, function (result) {
+                var html = modifyTemplate(result);
+                $('#stu-table-result').html(html);
+            });
+        });
+
+        $(document).on('click', 'button[name="modify"]', function () {
             var stuId = $(this).attr('stu-id');
             var url = 'student/' + stuId + '?reqdate=' + new Date().getTime();
             $.get(url, {}, function (result) {
