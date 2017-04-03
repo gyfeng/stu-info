@@ -31,12 +31,12 @@ public class AlertService {
         this.mailSender = mailSender;
     }
 
-    @Scheduled(cron = "0 0 12 * * *")
+    @Scheduled(cron = "0 30 10 * * *", zone = "Asia/Shanghai")
     public void alert() {
         log.info("定时提醒JOB启动");
         Iterable<UserInfo> userInfos = userInfoDao.findAll();
         userInfos.forEach((stu) -> {
-            if (stu.getPhone() == null || stu.getPhone().length() < 5) {
+            if (stu.getCompany() == null || stu.getCompany().length() < 2) {
                 if (stu.getQq() != null && stu.getQq().length() > 5) {
                     log.info("send email to {}", stu.getStuName());
                     SimpleMailMessage message = new SimpleMailMessage();
@@ -52,9 +52,10 @@ public class AlertService {
                 }
             }
         });
+        log.info("定时提醒JOB完成");
     }
 
-    @Scheduled(cron = "0 30 21 * * *")
+    @Scheduled(cron = "0 0 20 * * *", zone = "Asia/Shanghai")
     public void sendBack() {
         log.info("bak 工作 启动");
         Iterable<UserInfo> userInfos = userInfoDao.findAll();
@@ -85,6 +86,7 @@ public class AlertService {
         message.setSubject("主题：重庆理工大学10级信息与计算科学专业校友信息收集备份");
         message.setText(all.toString());
         mailSender.send(message);
+        log.info("bak 工作 完成");
     }
 
     private String stringConvert(String string) {
