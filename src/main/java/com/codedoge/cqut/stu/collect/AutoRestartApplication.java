@@ -41,7 +41,8 @@ public class AutoRestartApplication {
         try (Git git = Git.cloneRepository().setDirectory(gitDir)
                 .setURI(gitURL).call()) {
             File restartLastFile = new File(gitDir, "restart-last");
-            try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(restartLastFile)))) {
+            try (FileOutputStream out = new FileOutputStream(restartLastFile);
+                 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out))) {
                 writer.write(String.valueOf(new Date().getTime()));
                 writer.newLine();
                 writer.flush();
