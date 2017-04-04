@@ -1,13 +1,15 @@
 package com.codedoge.cqut.stu.collect;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author Code Doge(http://www.codedoge.com/)
@@ -15,9 +17,9 @@ import org.springframework.stereotype.Component;
  * @since 1.0
  */
 @Slf4j
-@Component
-@EnableScheduling
-public class AlertService {
+@RestController
+public class AlertController {
+
     @Value("${EMAIL_USERNAME}")
     private String userName;
 
@@ -26,14 +28,15 @@ public class AlertService {
     private final JavaMailSender mailSender;
 
     @Autowired
-    public AlertService(UserInfoDao userInfoDao, JavaMailSender mailSender) {
+    public AlertController(UserInfoDao userInfoDao, JavaMailSender mailSender) {
         this.userInfoDao = userInfoDao;
         this.mailSender = mailSender;
     }
 
-    @Scheduled(cron = "0 30 10 * * *", zone = "Asia/Shanghai")
-    public void alert() {
+    @RequestMapping("alert")
+    public List<String> alert() {
         log.info("定时提醒JOB启动");
+        List<String> list = new ArrayList<>();
         Iterable<UserInfo> userInfos = userInfoDao.findAll();
         userInfos.forEach((stu) -> {
             if (stu.getCompany() == null || stu.getCompany().length() < 2) {
@@ -49,14 +52,16 @@ public class AlertService {
                             "麻烦各位填一下表格信息，地址：http://110010101.daoapp.io/，双击行进行编辑，谢谢！\r\n" +
                             "此信息为每天定时发送。若不需要填写，请忽略！郭远峰");
                     mailSender.send(message);
+                    list.add(stu.getStuName());
                 }
             }
         });
         log.info("定时提醒JOB完成");
+        return list;
     }
 
-    @Scheduled(cron = "0 0 20 * * *", zone = "Asia/Shanghai")
-    public void sendBack() {
+    @RequestMapping("bak")
+    public String sendBack() {
         log.info("bak 工作 启动");
         Iterable<UserInfo> userInfos = userInfoDao.findAll();
         StringBuilder all = new StringBuilder("学院名称,专业名称,班级名称,学号,姓名,性别,联系电话,电子邮箱,联系地址,工作单位,工作职位,行业,QQ,学历,入学年份,毕业年份,备注");
@@ -87,6 +92,7 @@ public class AlertService {
         message.setText(all.toString());
         mailSender.send(message);
         log.info("bak 工作 完成");
+        return "SUCCESS";
     }
 
     private String stringConvert(String string) {
